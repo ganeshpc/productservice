@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -66,10 +67,8 @@ public class FakeStoreProductService implements ProductService {
     public Product updateProductById(Long id, Product product) {
         RestTemplate restTemplate = restTemplateBuilder.build();
         FakeStoreProductDto fakeStoreProductDtoRequest = FakeStoreProductDto.fromProduct(product);
-        ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate
-                .postForEntity("https://fakestoreapi.com/products/{id}", fakeStoreProductDtoRequest,
-                        FakeStoreProductDto.class, id);
-
+        RequestEntity<FakeStoreProductDto> requestEntity = RequestEntity.put("https://fakestoreapi.com/products/{id}", id).body(fakeStoreProductDtoRequest);
+        ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.exchange(requestEntity, FakeStoreProductDto.class);
         FakeStoreProductDto fakeStoreProductDto = responseEntity.getBody();
         Product responseProduct = fakeStoreProductDto.toProduct();
         return responseProduct;
