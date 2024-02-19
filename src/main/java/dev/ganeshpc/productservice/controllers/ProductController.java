@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.ganeshpc.productservice.dtos.product.RequestProductDto;
 import dev.ganeshpc.productservice.dtos.product.ResponseProductDto;
+import dev.ganeshpc.productservice.exceptions.ProductNotFoundException;
 import dev.ganeshpc.productservice.models.Product;
 import dev.ganeshpc.productservice.services.prodcutservices.ProductService;
 
@@ -40,7 +41,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseProductDto getProductById(@PathVariable("id") Long id) {
+    public ResponseProductDto getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
         Product product = productService.getProductById(id);
         ResponseProductDto responseProductDto = ResponseProductDto.fromProduct(product);
         return responseProductDto;
@@ -54,7 +55,8 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseProductDto updateProductById(@PathVariable("id") Long id, @RequestBody RequestProductDto requestProductDto) {
+    public ResponseProductDto updateProductById(@PathVariable("id") Long id,
+            @RequestBody RequestProductDto requestProductDto) {
         Product requestProduct = requestProductDto.toProduct();
         Product product = productService.updateProductById(id, requestProduct);
         ResponseProductDto responseProductDto = ResponseProductDto.fromProduct(product);
