@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import dev.ganeshpc.productservice.dtos.product.RequestProductDto;
 import dev.ganeshpc.productservice.dtos.product.ResponseProductDto;
+import dev.ganeshpc.productservice.exceptions.ProductCreationFailedException;
 import dev.ganeshpc.productservice.exceptions.ProductNotFoundException;
 import dev.ganeshpc.productservice.models.Product;
 import dev.ganeshpc.productservice.services.prodcutservices.ProductService;
@@ -31,7 +32,7 @@ public class ProductController {
     }
 
     @GetMapping()
-    public List<ResponseProductDto> getAllProducts() {
+    public List<ResponseProductDto> getAllProducts() throws ProductNotFoundException {
         List<ResponseProductDto> responseProductDtos = new ArrayList<>();
         List<Product> products = productService.getAllProducts();
         for (Product product : products) {
@@ -48,7 +49,7 @@ public class ProductController {
     }
 
     @PostMapping()
-    public ResponseProductDto createProduct(@RequestBody RequestProductDto requestProductDto) {
+    public ResponseProductDto createProduct(@RequestBody RequestProductDto requestProductDto) throws ProductCreationFailedException {
         Product product = productService.createProduct(requestProductDto.toProduct());
         ResponseProductDto responseProductDto = ResponseProductDto.fromProduct(product);
         return responseProductDto;

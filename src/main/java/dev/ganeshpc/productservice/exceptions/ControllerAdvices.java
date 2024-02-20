@@ -18,4 +18,11 @@ public class ControllerAdvices {
                 HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(ProductCreationFailedException.class)
+    private ResponseEntity<ExceptionDto> handleProductCreationFailedException(
+            ProductNotFoundException productNotFoundException) {
+        return new ResponseEntity<>(
+                new ExceptionDto(HttpStatus.INTERNAL_SERVER_ERROR, productNotFoundException.getMessage()),
+                HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }
