@@ -3,6 +3,7 @@ package dev.ganeshpc.productservice.clients.productservice.fakestore;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.RequestEntity;
@@ -15,11 +16,13 @@ import dev.ganeshpc.productservice.dtos.product.GenericProductDto;
 import dev.ganeshpc.productservice.exceptions.ProductCreationFailedException;
 import dev.ganeshpc.productservice.exceptions.ProductNotFoundException;
 
-
 @Service
-public class FakeStoreProductServiceClient{
+public class FakeStoreProductServiceClient {
 
     private RestTemplateBuilder restTemplateBuilder;
+
+    @Value("${productservice.clients.fakestore.baseurl}")
+    private String baseUrl;
 
     public FakeStoreProductServiceClient(RestTemplateBuilder restTemplateBuilder) {
         this.restTemplateBuilder = restTemplateBuilder;
@@ -29,7 +32,7 @@ public class FakeStoreProductServiceClient{
         RestTemplate restTemplate = restTemplateBuilder.build();
 
         ResponseEntity<FakeStoreProductDto[]> responseEntity = restTemplate
-                .getForEntity("https://fakestoreapi.com/products", FakeStoreProductDto[].class);
+                .getForEntity(baseUrl, FakeStoreProductDto[].class);
 
         FakeStoreProductDto[] fakeStoreProductDtos = responseEntity.getBody();
 
@@ -48,9 +51,10 @@ public class FakeStoreProductServiceClient{
 
     public GenericProductDto getProductById(Long id) throws ProductNotFoundException {
         RestTemplate restTemplate = restTemplateBuilder.build();
+        String url = baseUrl + "/{id}";
 
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate
-                .getForEntity("https://fakestoreapi.com/products/{id}", FakeStoreProductDto.class, id);
+                .getForEntity(url, FakeStoreProductDto.class, id);
 
         FakeStoreProductDto fakeStoreProductDto = responseEntity.getBody();
 
@@ -65,7 +69,7 @@ public class FakeStoreProductServiceClient{
         RestTemplate restTemplate = restTemplateBuilder.build();
         FakeStoreProductDto fakeStoreProductDtoRequest = FakeStoreProductDto.fromProduct(product);
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate
-                .postForEntity("https://fakestoreapi.com/products", fakeStoreProductDtoRequest,
+                .postForEntity(baseUrl, fakeStoreProductDtoRequest,
                         FakeStoreProductDto.class);
 
         FakeStoreProductDto fakeStoreProductDto = responseEntity.getBody();
@@ -80,9 +84,11 @@ public class FakeStoreProductServiceClient{
 
     public GenericProductDto updateProductById(Long id, GenericProductDto product) {
         RestTemplate restTemplate = restTemplateBuilder.build();
+        String url = baseUrl + "/{id}";
+
         FakeStoreProductDto fakeStoreProductDtoRequest = FakeStoreProductDto.fromProduct(product);
         RequestEntity<FakeStoreProductDto> requestEntity = RequestEntity
-                .put("https://fakestoreapi.com/products/{id}", id).body(fakeStoreProductDtoRequest);
+                .put(url, id).body(fakeStoreProductDtoRequest);
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.exchange(requestEntity,
                 FakeStoreProductDto.class);
         FakeStoreProductDto fakeStoreProductDto = responseEntity.getBody();
@@ -92,8 +98,10 @@ public class FakeStoreProductServiceClient{
 
     public GenericProductDto deleteProductById(Long id) {
         RestTemplate restTemplate = restTemplateBuilder.build();
+        String url = baseUrl + "/{id}";
+
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.exchange(
-                "https://fakestoreapi.com/products/{id}", HttpMethod.DELETE, null, FakeStoreProductDto.class, id);
+                url, HttpMethod.DELETE, null, FakeStoreProductDto.class, id);
         FakeStoreProductDto fakeStoreProductDto = responseEntity.getBody();
         GenericProductDto product = fakeStoreProductDto.toProduct();
         return product;

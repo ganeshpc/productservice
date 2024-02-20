@@ -4,3 +4,7 @@ server:
 
 productservice:
     type: fakeStoreProductService
+
+    clients: 
+        fakestore:
+            baseurl: https://fakestoreapi.com/products
