@@ -1,5 +1,7 @@
 server:
     port: 3000
+    # error:
+        # include-stacktrace: never   #(whether to include stacktrace in response)
 
 
 productservice:
@@ -7,4 +9,7 @@ productservice:
 
     clients: 
         fakestore:
-            baseurl: https://fakestoreapi.com/products
+            api:
+                url: https://fakestoreapi.com
+                paths: 
+                    products: /products
