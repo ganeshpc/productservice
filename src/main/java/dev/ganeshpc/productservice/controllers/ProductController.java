@@ -2,6 +2,7 @@ package dev.ganeshpc.productservice.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import dev.ganeshpc.productservice.dtos.product.GenericProductDto;
 import dev.ganeshpc.productservice.dtos.product.RequestProductDto;
 import dev.ganeshpc.productservice.dtos.product.ResponseProductDto;
 import dev.ganeshpc.productservice.exceptions.ProductCreationFailedException;
@@ -34,40 +35,40 @@ public class ProductController {
     @GetMapping()
     public List<ResponseProductDto> getAllProducts() throws ProductNotFoundException {
         List<ResponseProductDto> responseProductDtos = new ArrayList<>();
-        List<Product> products = productService.getAllProducts();
-        for (Product product : products) {
-            responseProductDtos.add(ResponseProductDto.fromProduct(product));
+        List<GenericProductDto> products = productService.getAllProducts();
+        for (GenericProductDto product : products) {
+            responseProductDtos.add(ResponseProductDto.fromGenericProductDto(product));
         }
         return responseProductDtos;
     }
 
     @GetMapping("/{id}")
     public ResponseProductDto getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
-        Product product = productService.getProductById(id);
-        ResponseProductDto responseProductDto = ResponseProductDto.fromProduct(product);
+        GenericProductDto product = productService.getProductById(id);
+        ResponseProductDto responseProductDto = ResponseProductDto.fromGenericProductDto(product);
         return responseProductDto;
     }
 
     @PostMapping()
     public ResponseProductDto createProduct(@RequestBody RequestProductDto requestProductDto) throws ProductCreationFailedException {
-        Product product = productService.createProduct(requestProductDto.toProduct());
-        ResponseProductDto responseProductDto = ResponseProductDto.fromProduct(product);
+        GenericProductDto product = productService.createProduct(requestProductDto.toGenericProductDto());
+        ResponseProductDto responseProductDto = ResponseProductDto.fromGenericProductDto(product);
         return responseProductDto;
     }
 
     @PutMapping("/{id}")
     public ResponseProductDto updateProductById(@PathVariable("id") Long id,
             @RequestBody RequestProductDto requestProductDto) {
-        Product requestProduct = requestProductDto.toProduct();
-        Product product = productService.updateProductById(id, requestProduct);
-        ResponseProductDto responseProductDto = ResponseProductDto.fromProduct(product);
+        GenericProductDto requestProduct = requestProductDto.toGenericProductDto();
+        GenericProductDto product = productService.updateProductById(id, requestProduct);
+        ResponseProductDto responseProductDto = ResponseProductDto.fromGenericProductDto(product);
         return responseProductDto;
     }
 
     @DeleteMapping("/{id}")
     public ResponseProductDto deleteProductById(@PathVariable("id") Long id) {
-        Product product = productService.deleteProductById(id);
-        ResponseProductDto responseProductDto = ResponseProductDto.fromProduct(product);
+        GenericProductDto product = productService.deleteProductById(id);
+        ResponseProductDto responseProductDto = ResponseProductDto.fromGenericProductDto(product);
         return responseProductDto;
     }
 }

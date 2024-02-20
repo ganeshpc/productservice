@@ -2,18 +2,18 @@ package dev.ganeshpc.productservice.services.prodcutservices;
 
 import java.util.List;
 
+import dev.ganeshpc.productservice.dtos.product.GenericProductDto;
 import dev.ganeshpc.productservice.exceptions.ProductCreationFailedException;
 import dev.ganeshpc.productservice.exceptions.ProductNotFoundException;
-import dev.ganeshpc.productservice.models.Product;
 
 public interface ProductService {
-    List<Product> getAllProducts() throws ProductNotFoundException;
+    List<GenericProductDto> getAllProducts() throws ProductNotFoundException;
 
-    Product getProductById(Long id) throws ProductNotFoundException;
+    GenericProductDto getProductById(Long id) throws ProductNotFoundException;
 
-    Product createProduct(Product product) throws ProductCreationFailedException;
+    GenericProductDto createProduct(GenericProductDto product) throws ProductCreationFailedException;
 
-    Product updateProductById(Long id, Product product);
+    GenericProductDto updateProductById(Long id, GenericProductDto product);
 
-    Product deleteProductById(Long id);
+    GenericProductDto deleteProductById(Long id);
 }

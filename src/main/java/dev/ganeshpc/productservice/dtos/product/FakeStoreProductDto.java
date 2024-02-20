@@ -21,8 +21,8 @@ public class FakeStoreProductDto {
 
     private Double price;
 
-    public Product toProduct() {
-        Product product = new Product();
+    public GenericProductDto toProduct() {
+        GenericProductDto product = new GenericProductDto();
 
         product.setId(id);
         product.setTitle(title);
@@ -34,7 +34,7 @@ public class FakeStoreProductDto {
         return product;
     }
 
-    public static FakeStoreProductDto fromProduct(Product product) {
+    public static FakeStoreProductDto fromProduct(GenericProductDto product) {
         FakeStoreProductDto fakeStoreProductDto = new FakeStoreProductDto();
 
         fakeStoreProductDto.setId(product.getId());

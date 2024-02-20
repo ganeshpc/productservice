@@ -19,8 +19,8 @@ public class RequestProductDto {
 
     private Double price;
 
-    public Product toProduct() {
-        Product product = new Product(); 
+    public GenericProductDto toGenericProductDto() {
+        GenericProductDto product = new GenericProductDto(); 
 
         product.setTitle(title);
         product.setDescription(description);

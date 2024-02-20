@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import dev.ganeshpc.productservice.clients.productservice.fakestore.FakeStoreProductServiceClient;
+import dev.ganeshpc.productservice.dtos.product.GenericProductDto;
 import dev.ganeshpc.productservice.exceptions.ProductCreationFailedException;
 import dev.ganeshpc.productservice.exceptions.ProductNotFoundException;
 import dev.ganeshpc.productservice.models.Product;
@@ -19,35 +20,35 @@ public class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() throws ProductNotFoundException {
-        List<Product> products = fakeStoreProductServiceClient.getAllProducts();
+    public List<GenericProductDto> getAllProducts() throws ProductNotFoundException {
+        List<GenericProductDto> products = fakeStoreProductServiceClient.getAllProducts();
 
         return products;
     }
 
     @Override
-    public Product getProductById(Long id) throws ProductNotFoundException {
-        Product product = fakeStoreProductServiceClient.getProductById(id);
+    public GenericProductDto getProductById(Long id) throws ProductNotFoundException {
+        GenericProductDto product = fakeStoreProductServiceClient.getProductById(id);
 
         return product;
     }
 
     @Override
-    public Product createProduct(Product product) throws ProductCreationFailedException {
-        Product createdProduct = fakeStoreProductServiceClient.createProduct(product);
+    public GenericProductDto createProduct(GenericProductDto product) throws ProductCreationFailedException {
+        GenericProductDto createdProduct = fakeStoreProductServiceClient.createProduct(product);
 
         return createdProduct;
     }
 
     @Override
-    public Product updateProductById(Long id, Product product) {
-        Product updatedProduct = fakeStoreProductServiceClient.updateProductById(id, product);
+    public GenericProductDto updateProductById(Long id, GenericProductDto product) {
+        GenericProductDto updatedProduct = fakeStoreProductServiceClient.updateProductById(id, product);
         return updatedProduct;
     }
 
     @Override
-    public Product deleteProductById(Long id) {
-        Product product = fakeStoreProductServiceClient.deleteProductById(id);
+    public GenericProductDto deleteProductById(Long id) {
+        GenericProductDto product = fakeStoreProductServiceClient.deleteProductById(id);
         return product;
     }
 }

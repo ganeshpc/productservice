@@ -20,7 +20,7 @@ public class ResponseProductDto {
 
     private Double price;
 
-    public static ResponseProductDto fromProduct(Product product) {
+    public static ResponseProductDto fromGenericProductDto(GenericProductDto product) {
         ResponseProductDto responseProductDto = new ResponseProductDto();
         
         responseProductDto.setId(product.getId());
