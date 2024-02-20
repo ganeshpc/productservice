@@ -20,11 +20,11 @@ import dev.ganeshpc.productservice.exceptions.ProductNotFoundException;
 public class FakeStoreProductServiceClient {
 
     private RestTemplateBuilder restTemplateBuilder;
-
-    @Value("${productservice.clients.fakestore.baseurl}")
+    
     private String baseUrl;
 
-    public FakeStoreProductServiceClient(RestTemplateBuilder restTemplateBuilder) {
+    public FakeStoreProductServiceClient(@Value("${productservice.clients.fakestore.baseurl}") String baseUrl, RestTemplateBuilder restTemplateBuilder) {
+        this.baseUrl = baseUrl;
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
