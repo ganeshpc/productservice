@@ -20,19 +20,26 @@ import dev.ganeshpc.productservice.exceptions.ProductNotFoundException;
 public class FakeStoreProductServiceClient {
 
     private RestTemplateBuilder restTemplateBuilder;
-    
+
     private String baseUrl;
 
-    public FakeStoreProductServiceClient(@Value("${productservice.clients.fakestore.baseurl}") String baseUrl, RestTemplateBuilder restTemplateBuilder) {
+    private String productPath;
+
+    public FakeStoreProductServiceClient(@Value("${productservice.clients.fakestore.api.url}") String baseUrl,
+            @Value("${productservice.clients.fakestore.api.paths.products}") String productPath,
+            RestTemplateBuilder restTemplateBuilder) {
         this.baseUrl = baseUrl;
+        this.productPath = productPath;
         this.restTemplateBuilder = restTemplateBuilder;
     }
 
     public List<GenericProductDto> getAllProducts() throws ProductNotFoundException {
         RestTemplate restTemplate = restTemplateBuilder.build();
 
+        String url = baseUrl + productPath;
+
         ResponseEntity<FakeStoreProductDto[]> responseEntity = restTemplate
-                .getForEntity(baseUrl, FakeStoreProductDto[].class);
+                .getForEntity(url, FakeStoreProductDto[].class);
 
         FakeStoreProductDto[] fakeStoreProductDtos = responseEntity.getBody();
 
@@ -51,7 +58,7 @@ public class FakeStoreProductServiceClient {
 
     public GenericProductDto getProductById(Long id) throws ProductNotFoundException {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        String url = baseUrl + "/{id}";
+        String url = baseUrl + productPath + "/{id}";
 
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate
                 .getForEntity(url, FakeStoreProductDto.class, id);
@@ -67,9 +74,12 @@ public class FakeStoreProductServiceClient {
 
     public GenericProductDto createProduct(GenericProductDto product) throws ProductCreationFailedException {
         RestTemplate restTemplate = restTemplateBuilder.build();
+
+        String url = baseUrl + productPath;
+
         FakeStoreProductDto fakeStoreProductDtoRequest = FakeStoreProductDto.fromProduct(product);
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate
-                .postForEntity(baseUrl, fakeStoreProductDtoRequest,
+                .postForEntity(url, fakeStoreProductDtoRequest,
                         FakeStoreProductDto.class);
 
         FakeStoreProductDto fakeStoreProductDto = responseEntity.getBody();
@@ -84,7 +94,8 @@ public class FakeStoreProductServiceClient {
 
     public GenericProductDto updateProductById(Long id, GenericProductDto product) {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        String url = baseUrl + "/{id}";
+
+        String url = baseUrl + productPath + "/{id}";
 
         FakeStoreProductDto fakeStoreProductDtoRequest = FakeStoreProductDto.fromProduct(product);
         RequestEntity<FakeStoreProductDto> requestEntity = RequestEntity
@@ -98,7 +109,7 @@ public class FakeStoreProductServiceClient {
 
     public GenericProductDto deleteProductById(Long id) {
         RestTemplate restTemplate = restTemplateBuilder.build();
-        String url = baseUrl + "/{id}";
+        String url = baseUrl + productPath + "/{id}";
 
         ResponseEntity<FakeStoreProductDto> responseEntity = restTemplate.exchange(
                 url, HttpMethod.DELETE, null, FakeStoreProductDto.class, id);
