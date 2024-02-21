@@ -1,15 +1,25 @@
 server:
-    port: 3000
-    # error:
-        # include-stacktrace: never   #(whether to include stacktrace in response)
+  port: 3000
+  
+  # error.include-stacktrace: never   #(whether to include stacktrace in response)
 
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/userservice_db
+    username: userservice
+    password: root123
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 productservice:
-    type: fakeStoreProductService
+  type: fakeStoreProductService
 
-    clients: 
-        fakestore:
-            api:
-                url: https://fakestoreapi.com
-                paths: 
-                    products: /products
+  clients:
+    fakestore:
+      api:
+        url: https://fakestoreapi.com
+        paths:
+          products: /products

@@ -1,5 +1,6 @@
 package dev.ganeshpc.productservice.models;
 
+import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -7,7 +8,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Category extends BaseModel{
+@Entity
+public class Category extends BaseModel {
 
     private String name;
 
